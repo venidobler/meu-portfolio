@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { getLenis } from "@/lib/lenis";
 
 const links = [
@@ -10,6 +11,9 @@ const links = [
 ];
 
 export default function Nav() {
+    const [scrolled, setScrolled] = useState(false);
+    const [active, setActive] = useState<string>("");
+
     const scrollTo = (e: React.MouseEvent, target: string | number) => {
         e.preventDefault();
         const lenis = getLenis();
@@ -22,8 +26,38 @@ export default function Nav() {
         }
     };
 
+    useEffect(() => {
+        // fundo aparece depois de rolar um pouco
+        const onScroll = () => setScrolled(window.scrollY > 40);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+
+        // acende o link da seção que está na tela
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+                });
+            },
+            { rootMargin: "-50% 0px -50% 0px" }
+        );
+
+        links.forEach((l) => {
+            const el = document.querySelector(l.target);
+            if (el) observer.observe(el);
+        });
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+            observer.disconnect();
+        };
+    }, []);
+
     return (
-        <nav className="fixed inset-x-0 top-0 z-50 bg-gradient-to-b from-bg via-bg/80 to-transparent">
+        <nav
+            className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${scrolled ? "bg-bg/70 backdrop-blur-md" : "bg-transparent"
+                }`}
+        >
             <div className="flex items-center justify-between px-6 py-6 sm:px-10">
 
                 <a href="#top"
@@ -38,7 +72,8 @@ export default function Nav() {
 
                             <a href={l.target}
                                 onClick={(e) => scrollTo(e, l.target)}
-                                className="transition-colors hover:text-fg"
+                                className={`transition-colors hover:text-fg ${active === l.target ? "text-fg" : ""
+                                    }`}
                             >
                                 {l.label}
                             </a>
