@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import Nav from "@/components/Nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${geistSans.variable} ${display.variable} antialiased`}>
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <Nav />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -12,12 +12,7 @@ export default function Hero() {
     useGSAP(
         () => {
             const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-            tl.from(".hero-top", { autoAlpha: 0, y: -12, duration: 0.8 })
-                .from(
-                    ".fade-up",
-                    { y: 20, autoAlpha: 0, duration: 0.9, stagger: 0.08 },
-                    "-=0.4"
-                )
+            tl.from(".fade-up", { y: 20, autoAlpha: 0, duration: 0.9, stagger: 0.08 })
                 .from(
                     ".reveal-line",
                     { yPercent: 120, duration: 1.2, stagger: 0.12 },
@@ -29,15 +24,6 @@ export default function Hero() {
 
     return (
         <section ref={container} className="flex min-h-screen flex-col px-6 sm:px-10">
-            <header className="hero-top flex items-center justify-between py-6">
-                <span className="font-display text-lg font-medium tracking-tight">
-                    Venícius Dobler
-                </span>
-                <span className="flex items-center gap-2 text-sm text-muted">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Disponível para projetos
-                </span>
-            </header>
 
             <div className="flex flex-1 flex-col justify-center">
                 <p className="fade-up mb-6 text-sm uppercase tracking-[0.25em] text-muted">
